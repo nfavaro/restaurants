@@ -15,6 +15,7 @@ gulp.task('watch', ['serve', 'sass', 'less'], function() {
     gulp.watch("assets/scss/*.scss", ['sass']);
     gulp.watch("assets/less/*.less", ['less']);
     gulp.watch("*.html").on('change', browserSync.reload);
+    gulp.watch("assets/**/*.js").on('change', browserSync.reload);
 });
 
 // Compile SASS into CSS & auto-inject into browsers
@@ -41,6 +42,7 @@ gulp.task('less', function() {
 });
 
 
-gulp.task('default', ['serve']);
+// gulp.task('default', ['serve']);
+gulp.task('default', ['watch']);
 gulp.task('server', ['serve']);
 gulp.task('dev', ['watch']);

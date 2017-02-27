@@ -10,7 +10,10 @@
   "author": "Algolia",
   "license": "Algolia",
   "devDependencies": {
+    "algoliasearch": "^3.21.1",
     "browser-sync": "^2.12.10",
+    "csv-parse": "^1.2.0",
+    "dotenv": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-less-sourcemap": "^1.4.3",
     "gulp-sass": "^2.3.1"

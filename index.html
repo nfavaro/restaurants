@@ -1,23 +1,107 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html ng-app="restaurants" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Restaurant Locator - by Algolia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/main.css">
   </head>
   <body>
 
-  <div class="welcome-container">
-    <p>Hello buddy!</p>
-    <p>Welcome to the CSS test</p>
-    <p>That blank page is all yours, let's make it rock!</p>
+  <div class="container" ng-controller="SearchController as ctrl">  
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1 results-wrapper">
+
+        <!-- SEARCH BAR -->
+        <div class="row">    
+          <div class="col-xs-12 text-center searchbar">
+            <h3 ng-if="!ctrl.results"><span class="label label-info"><i class="glyphicon glyphicon-refresh gly-spin"></i> Determining Location</span></h3>
+            <div>
+            <input class="form-control" type="search" autocomplete="off" 
+                   placeholder="Search for Restaurants by Name, Cuisine, Location"
+                   ng-model="ctrl.searchText" ng-change="ctrl.setQuery(ctrl.searchText)"
+                   ng-if="ctrl.results">
+            <a href ng-click="ctrl.searchText = ''"><i class="glyphicon glyphicon-remove close-button"
+               ng-show="ctrl.searchText"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="ctrl.results" class="row">
+          <!-- SIDEBAR -->
+          <div class="col-xs-3 sidebar">
+            <h5>Cuisine/Food Type <a href ng-click="ctrl.clearRefinements('food_type')" role="button" ng-show="ctrl.isRefined.food_type"><i class="pull-right glyphicon glyphicon-remove"></i></a></h5>
+            <ul class="nav nav-pills nav-stacked">
+              <li ng-repeat="foodType in ctrl.foodTypes|limitTo:ctrl.foodTypeLimit" ng-class="{'active': foodType.isRefined}">
+                <a href ng-click="ctrl.toggleRefinement('food_type', foodType.name, foodType)"><span class="pull-right facet-count" ng-bind="foodType.count | number"></span><span ng-bind="foodType.name" class="facet-text float-left"></span></a>
+              </li>
+            </ul>
+            <div class="text-center">
+            <button class="btn btn-default btn-xs" 
+                    ng-click="ctrl.viewMoreFoodTypes()" 
+                    ng-bind="ctrl.viewMoreFoodTypeButtonText"
+                    ng-show="ctrl.foodTypes.length > 10"></button>
+            </div>
+
+            <h5 class="sidebar-header">Rating</h5>
+            <div ng-repeat="star in [5,4,3,2,1,0]">
+              <a href ng-click="ctrl.addStarFilter(star)">
+              <p class="star-wrapper" ng-class="{'disabled': star != ctrl.starFilter && ctrl.starFilter > 0}">
+                <span class="stars" ng-style="{'width': ctrl.calcStarsWidth(star)}"></span>
+              </p>
+              </a>
+              <p><i ng-class="{'glyphicon-ok': star == ctrl.starFilter}" class="glyphicon"></i></p>
+            </div>
+
+            <h5 class="sidebar-header">Payment Options <a href ng-click="ctrl.clearRefinements('payment_options')" role="button" ng-show="ctrl.isRefined.payment_options"><i class="pull-right glyphicon glyphicon-remove"></i></a></h5>
+            <ul class="nav nav-pills nav-stacked">
+              <li ng-repeat="paymentType in ctrl.paymentTypes" ng-class="{'active': paymentType.isRefined}">
+                <a href ng-click="ctrl.toggleRefinement('payment_options', paymentType.name, paymentType)"><span class="pull-right facet-count" ng-bind="paymentType.count | number"></span><span ng-bind="paymentType.name" class="facet-text float-left"></span></a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- RESULTS -->
+          <div class="col-xs-9 results">
+            <h5><span>{{ ctrl.totalHits | number }} results found <small>in {{ ctrl.searchTime }} seconds</small></span>
+            </h5>
+            <div ng-repeat="result in ctrl.results" class="media result">
+              <div class="media-left">
+                <a ng-href="{{ result.reserve_url }}" target="_blank">
+                  <img class="media-object img-rounded result-thumb" ng-src="{{result.image_url}}">
+                </a>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading" ng-bind="result.name"></h4>
+                <p class="pull-left star-count" ng-bind="{{ result.stars_count | number: 1 }}"></p>
+                <p class="star-wrapper">
+                  <span class="stars" ng-style="{'width': ctrl.calcStarsWidth(result.stars_count)}"></span>
+                </p>
+                <p class="reviews">({{ result.reviews_count | number }} reviews)</p>
+                <p>{{ result.food_type }} | {{ result.neighborhood }} | {{ result.price_range }}</p>
+              </div>
+            </div>
+
+            <div class="text-center" ng-hide="ctrl.results.length == ctrl.totalHits">
+              <button class="btn btn-default btn-lg" 
+                      ng-click="ctrl.nextPage()">Show more</button>
+            </div>
+
+          </div>
+
+        </div><!-- END ROW -->
+
+      </div>
+    </div>
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/g/algoliasearch@3(algoliasearchLite.min.js),algoliasearch.helper@2"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="assets/js/main.js"></script>
   </body>
 </html>
