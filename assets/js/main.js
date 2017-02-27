@@ -127,7 +127,7 @@ angular.module('restaurants', [])
     AlgoliaSearch.setQuery(query).then(updateView);
   }
 
-  function toggleRefinement(facet, value, view) {
+  function toggleRefinement(facet, value) {
     AlgoliaSearch.toggleRefinement(facet, value).then(updateView);
     self.isRefined[facet] = true;
   }

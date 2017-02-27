@@ -30,7 +30,7 @@
                    placeholder="Search for Restaurants by Name, Cuisine, Location"
                    ng-model="ctrl.searchText" ng-change="ctrl.setQuery(ctrl.searchText)"
                    ng-if="ctrl.results">
-            <a href ng-click="ctrl.searchText = ''"><i class="glyphicon glyphicon-remove close-button"
+            <a href ng-click="ctrl.searchText = ''; ctrl.setQuery()"><i class="glyphicon glyphicon-remove close-button"
                ng-show="ctrl.searchText"></i></a>
             </div>
           </div>
@@ -42,7 +42,7 @@
             <h5>Cuisine/Food Type <a href ng-click="ctrl.clearRefinements('food_type')" role="button" ng-show="ctrl.isRefined.food_type"><i class="pull-right glyphicon glyphicon-remove"></i></a></h5>
             <ul class="nav nav-pills nav-stacked">
               <li ng-repeat="foodType in ctrl.foodTypes|limitTo:ctrl.foodTypeLimit" ng-class="{'active': foodType.isRefined}">
-                <a href ng-click="ctrl.toggleRefinement('food_type', foodType.name, foodType)"><span class="pull-right facet-count" ng-bind="foodType.count | number"></span><span ng-bind="foodType.name" class="facet-text float-left"></span></a>
+                <a href ng-click="ctrl.toggleRefinement('food_type', foodType.name)"><span class="pull-right facet-count" ng-bind="foodType.count | number"></span><span ng-bind="foodType.name" class="facet-text float-left"></span></a>
               </li>
             </ul>
             <div class="text-center">
@@ -65,7 +65,7 @@
             <h5 class="sidebar-header">Payment Options <a href ng-click="ctrl.clearRefinements('payment_options')" role="button" ng-show="ctrl.isRefined.payment_options"><i class="pull-right glyphicon glyphicon-remove"></i></a></h5>
             <ul class="nav nav-pills nav-stacked">
               <li ng-repeat="paymentType in ctrl.paymentTypes" ng-class="{'active': paymentType.isRefined}">
-                <a href ng-click="ctrl.toggleRefinement('payment_options', paymentType.name, paymentType)"><span class="pull-right facet-count" ng-bind="paymentType.count | number"></span><span ng-bind="paymentType.name" class="facet-text float-left"></span></a>
+                <a href ng-click="ctrl.toggleRefinement('payment_options', paymentType.name)"><span class="pull-right facet-count" ng-bind="paymentType.count | number"></span><span ng-bind="paymentType.name" class="facet-text float-left"></span></a>
               </li>
             </ul>
           </div>
