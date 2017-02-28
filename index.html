@@ -55,7 +55,7 @@
             <h5 class="sidebar-header">Rating</h5>
             <div ng-repeat="star in [5,4,3,2,1,0]">
               <a href ng-click="ctrl.addStarFilter(star)">
-              <p class="star-wrapper" ng-class="{'disabled': star != ctrl.starFilter && ctrl.starFilter > 0}">
+              <p class="star-wrapper" ng-class="{'disabled': star != ctrl.starFilter && ctrl.starFilter !== undefined }">
                 <span class="stars" ng-style="{'width': ctrl.calcStarsWidth(star)}"></span>
               </p>
               </a>
