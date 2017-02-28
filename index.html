@@ -93,6 +93,7 @@
 
             <div class="text-center" ng-hide="ctrl.results.length == ctrl.totalHits">
               <button class="btn btn-default btn-lg" 
+                      when-scrolled-to="ctrl.nextPage()"
                       ng-click="ctrl.nextPage()">Show more</button>
             </div>
 

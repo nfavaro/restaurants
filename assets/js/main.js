@@ -5,6 +5,7 @@ angular.module('restaurants', [])
 .constant('API_KEY', 'f7ccd1bec7ee529855fad1449648d653')
 .constant('INDEX_NAME', 'restaurants')
 
+/** Service to determine location or fallback to IP */
 .service('GetGeoOption', function($log, $q) {
   var deferred = $q.defer();
   return function () {
@@ -23,6 +24,7 @@ angular.module('restaurants', [])
     return deferred.promise;
   }
 })
+
 
 /** Algolia search service **/
 .service('AlgoliaSearch', function (APPLICATION_ID, API_KEY, INDEX_NAME, $q, GetGeoOption) {
@@ -100,6 +102,17 @@ angular.module('restaurants', [])
     deferred = $q.defer();
     helper.clearRefinements(type).search();
     return deferred.promise;
+  }
+})
+
+
+/** Quick directive to enable infinite scroll */
+.directive('whenScrolledTo', function ($document, $window) {
+  return function (scope, element, attrs) {
+    $document.bind('scroll', function () {
+      if (element.offset().top + element.height() < $window.innerHeight + $window.scrollY)
+        scope.$apply(attrs.whenScrolledTo);
+    });
   }
 })
 
