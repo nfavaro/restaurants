@@ -4,7 +4,14 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   background: url('../../resources/graphics/background.png');
-  margin: 40px;
+  margin: 40px 0;
+}
+
+// collapse body margin on smaller screens
+@media (max-width: 992px) {
+  body {
+    margin: 0;
+  }
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 

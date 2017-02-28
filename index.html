@@ -19,7 +19,7 @@
 
   <div class="container" ng-controller="SearchController as ctrl">  
     <div class="row">
-      <div class="col-xs-10 col-xs-offset-1 results-wrapper">
+      <div class="col-lg-10 col-lg-offset-1 col-med-12 results-wrapper">
 
         <!-- SEARCH BAR -->
         <div class="row">    
@@ -38,7 +38,7 @@
 
         <div ng-if="ctrl.results" class="row">
           <!-- SIDEBAR -->
-          <div class="col-xs-3 sidebar">
+          <div class="col-xs-12 col-sm-4 col-md-3 sidebar">
             <h5>Cuisine/Food Type <a href ng-click="ctrl.clearRefinements('food_type')" role="button" ng-show="ctrl.isRefined.food_type"><i class="pull-right glyphicon glyphicon-remove"></i></a></h5>
             <ul class="nav nav-pills nav-stacked">
               <li ng-repeat="foodType in ctrl.foodTypes|limitTo:ctrl.foodTypeLimit" ng-class="{'active': foodType.isRefined}">
@@ -71,7 +71,7 @@
           </div>
 
           <!-- RESULTS -->
-          <div class="col-xs-9 results">
+          <div class="col-xs-12 col-sm-8 col-md-9 results">
             <h5><span>{{ ctrl.totalHits | number }} results found <small>in {{ ctrl.searchTime }} seconds</small></span>
             </h5>
             <div ng-repeat="result in ctrl.results" class="media result">
